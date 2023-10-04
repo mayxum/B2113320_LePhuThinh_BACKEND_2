@@ -24,11 +24,11 @@ class ContactService {
       { $set: { favorite: contact.favorite === true } },
       { returnDocument: "after", upsert: true }
     );
-    return result.value;
+    return result;
   }
   async find(filter) {
     const cursor = await this.Contact.find(filter);
-    return await cursor.toArray;
+    return await cursor.toArray();
   }
 
   async findByName(name) {
@@ -51,20 +51,20 @@ class ContactService {
       { $set: update },
       { returnDocument: "after" }
     );
-    return result.value;
+    return result;
   }
   async delete(id) {
     const result = await this.Contact.findOneAndDelete({
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
     });
-    return result.value;
+    return result;
   }
   async findFavorite() {
     return await this.find({ favorite: true });
   }
   async deleteAll() {
     const result = await this.Contact.deleteMany({});
-    return result.deleteCount;
+    return result.deletedCount;
   }
 }
 
